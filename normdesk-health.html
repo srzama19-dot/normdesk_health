@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Normdesk Health — Assistant IA administratif</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal-50: #E1F5EE; --teal-100: #9FE1CB; --teal-200: #5DCAA5;
+    --teal-600: #0F6E56; --teal-800: #085041; --teal-900: #04342C;
+    --gray-50: #F1EFE8; --gray-100: #D3D1C7; --gray-400: #888780;
+    --gray-600: #5F5E5A; --gray-900: #2C2C2A;
+    --red-50: #FCEBEB; --red-600: #A32D2D; --red-800: #791F1F;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #F7F9F8;
+    color: #1A2420;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(247,249,248,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(15,110,86,0.1);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: var(--teal-600);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 18px; height: 18px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; }
+  .logo-text { font-size: 15px; font-weight: 600; color: var(--gray-900); letter-spacing: -0.02em; }
+  .logo-text span { color: var(--teal-600); }
+  .nav-cta {
+    padding: 8px 18px; border-radius: 8px;
+    background: var(--teal-600); color: white;
+    font-size: 13px; font-weight: 500;
+    border: none; cursor: pointer; font-family: inherit;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--teal-800); }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2.5rem 4rem;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+    animation: fadeUp 0.7s ease both;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 14px; border-radius: 100px;
+    background: var(--teal-50); border: 1px solid var(--teal-100);
+    font-size: 12px; font-weight: 500; color: var(--teal-600);
+    margin-bottom: 2rem;
+    letter-spacing: 0.03em; text-transform: uppercase;
+  }
+  .hero-badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--teal-600); animation: pulse 2s infinite;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.15; font-weight: 400;
+    color: var(--gray-900);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  h1 em { color: var(--teal-600); font-style: italic; }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--gray-600);
+    max-width: 560px; margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 13px 28px; border-radius: 10px;
+    background: var(--teal-600); color: white;
+    font-size: 14px; font-weight: 500; font-family: inherit;
+    border: none; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--teal-800); transform: translateY(-1px); }
+  .btn-secondary {
+    padding: 13px 28px; border-radius: 10px;
+    background: white; color: var(--gray-600);
+    font-size: 14px; font-weight: 500; font-family: inherit;
+    border: 1px solid var(--gray-100); cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--teal-100); color: var(--teal-600); }
+
+  /* SECTIONS */
+  .section { padding: 4rem 2.5rem; max-width: 1000px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--teal-600);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 400; color: var(--gray-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .problems-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; margin-top: 2.5rem;
+  }
+  .problem-card {
+    background: white; border: 1px solid #EAE9E3;
+    border-radius: 14px; padding: 1.5rem;
+    transition: box-shadow 0.2s;
+  }
+  .problem-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .problem-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: #FFF0EF; display: flex; align-items: center;
+    justify-content: center; margin-bottom: 1rem; font-size: 18px;
+  }
+  .problem-title { font-size: 14px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
+  .problem-desc { font-size: 13px; color: var(--gray-600); }
+
+  .solution-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+    align-items: center; margin-top: 3rem;
+  }
+  @media (max-width: 640px) { .solution-wrap { grid-template-columns: 1fr; } }
+  .solution-visual {
+    background: white; border: 1px solid #EAE9E3;
+    border-radius: 18px; padding: 1.5rem; position: relative; overflow: hidden;
+  }
+  .chat-msg {
+    display: flex; gap: 10px; margin-bottom: 14px; align-items: flex-start;
+    animation: fadeUp 0.5s ease both;
+  }
+  .chat-msg:nth-child(2) { animation-delay: 0.15s; }
+  .chat-msg:nth-child(3) { animation-delay: 0.3s; }
+  .chat-msg:nth-child(4) { animation-delay: 0.45s; }
+  .chat-avatar {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+  }
+  .avatar-patient { background: var(--gray-50); color: var(--gray-600); border: 1px solid var(--gray-100); }
+  .avatar-ai { background: var(--teal-600); color: white; }
+  .chat-bubble {
+    border-radius: 12px; padding: 10px 14px;
+    font-size: 13px; max-width: 85%;
+  }
+  .bubble-patient { background: var(--gray-50); color: var(--gray-900); border: 1px solid var(--gray-100); }
+  .bubble-ai { background: var(--teal-50); color: var(--teal-800); border: 1px solid var(--teal-100); }
+  .safe-badge {
+    margin-top: 1rem; padding: 8px 14px;
+    background: var(--teal-50); border-radius: 8px;
+    font-size: 12px; color: var(--teal-600); font-weight: 500;
+    display: flex; align-items: center; gap: 6px;
+    border: 1px solid var(--teal-100);
+  }
+
+  .features-list { list-style: none; }
+  .feature-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 1rem 0; border-bottom: 1px solid #F0EFE9;
+  }
+  .feature-item:last-child { border-bottom: none; }
+  .feature-check {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--teal-50); border: 1.5px solid var(--teal-200);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .feature-check svg { width: 11px; height: 11px; }
+  .feature-text { font-size: 14px; color: var(--gray-900); font-weight: 500; }
+  .feature-sub { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+  .no-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+  .no-cross {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #FFF0EF; border: 1.5px solid #FCCCC5;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .no-text { font-size: 13px; color: #A05050; }
+
+  .who-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem; margin-top: 2.5rem;
+  }
+  .who-card {
+    background: white; border: 1px solid #EAE9E3;
+    border-radius: 14px; padding: 1.5rem 1.25rem;
+    text-align: center; transition: all 0.2s; cursor: pointer;
+  }
+  .who-card:hover { border-color: var(--teal-200); transform: translateY(-2px); }
+  .who-icon { font-size: 28px; margin-bottom: 0.75rem; }
+  .who-name { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+  .who-sub { font-size: 12px; color: var(--gray-600); margin-top: 3px; }
+
+  .cta-section {
+    background: var(--teal-600); margin: 3rem 2.5rem;
+    border-radius: 22px; padding: 3.5rem 2.5rem;
+    text-align: center; color: white;
+  }
+  .cta-section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 400; margin-bottom: 1rem; color: white;
+  }
+  .cta-section p { font-size: 15px; opacity: 0.8; margin-bottom: 2rem; }
+  .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-white {
+    padding: 13px 28px; border-radius: 10px;
+    background: white; color: var(--teal-600);
+    font-size: 14px; font-weight: 600; font-family: inherit;
+    border: none; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-white:hover { opacity: 0.92; transform: translateY(-1px); }
+  .btn-outline-white {
+    padding: 13px 28px; border-radius: 10px;
+    background: transparent; color: white;
+    font-size: 14px; font-weight: 500; font-family: inherit;
+    border: 1.5px solid rgba(255,255,255,0.4); cursor: pointer; transition: all 0.2s;
+  }
+  .btn-outline-white:hover { border-color: white; }
+
+  .divider { height: 1px; background: #EAE9E3; margin: 0 2.5rem; }
+
+  footer {
+    padding: 2rem 2.5rem; text-align: center;
+    border-top: 1px solid #EAE9E3;
+    font-size: 12px; color: var(--gray-400);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 2.5 1.2 4.7 3 6.1V17l4 2 4-2v-1.9c1.8-1.4 3-3.6 3-6.1 0-4-3-7-7-7z"/><path d="M9 12h6M12 9v6"/></svg>
+    </div>
+    <span class="logo-text">Normdesk <span>Health</span></span>
+  </div>
+  <button class="nav-cta">Demander une démo</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    Assistant IA — jamais médical
+  </div>
+  <h1>Organisez les demandes patients<br><em>sans risque clinique</em></h1>
+  <p class="hero-sub">Les cabinets reçoivent trop d'appels. Les équipes n'ont plus le temps. Normdesk Health gère l'accueil et l'organisation, sans jamais intervenir médicalement.</p>
+  <div class="hero-btns">
+    <button class="btn-primary">Voir une démo →</button>
+    <button class="btn-secondary">Déployer dans votre cabinet</button>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROBLEM -->
+<section class="section">
+  <div class="section-label">Le problème</div>
+  <div class="section-title">Vos équipes sont débordées</div>
+  <div class="problems-grid">
+    <div class="problem-card">
+      <div class="problem-icon">📞</div>
+      <div class="problem-title">Lignes saturées</div>
+      <div class="problem-desc">Des appels sans fin, des patients qui raccrochent frustrés</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">📅</div>
+      <div class="problem-title">Rendez-vous manqués</div>
+      <div class="problem-desc">Annulations tardives, créneaux perdus, agenda chaotique</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">😤</div>
+      <div class="problem-title">Patients mécontents</div>
+      <div class="problem-desc">Temps d'attente trop longs, mauvaise expérience d'accueil</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">📋</div>
+      <div class="problem-title">Charge excessive</div>
+      <div class="problem-desc">Les secrétaires noyées dans l'administratif au lieu d'aider</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOLUTION -->
+<section class="section">
+  <div class="section-label">La solution</div>
+  <div class="section-title">Un assistant administratif,<br>jamais médical</div>
+  <div class="solution-wrap">
+    <div class="solution-visual">
+      <div style="font-size:11px;color:var(--gray-400);margin-bottom:1rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Conversation exemple</div>
+      <div class="chat-msg">
+        <div class="chat-avatar avatar-patient">P</div>
+        <div><div class="chat-bubble bubble-patient">Bonjour, je voudrais annuler mon RDV de demain</div></div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-avatar avatar-ai">AI</div>
+        <div><div class="chat-bubble bubble-ai">Bien sûr ! Je retrouve votre rendez-vous du 2 avril à 10h avec Dr. Martin. Souhaitez-vous le reporter ?</div></div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-avatar avatar-patient">P</div>
+        <div><div class="chat-bubble bubble-patient">Oui, si possible la semaine prochaine</div></div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-avatar avatar-ai">AI</div>
+        <div><div class="chat-bubble bubble-ai">Je vous propose le mardi 8 avril à 9h30 ou le jeudi 10 à 14h. Quelle option vous convient ?</div></div>
+      </div>
+      <div class="safe-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Aucun diagnostic — aucun conseil médical
+      </div>
+    </div>
+
+    <div>
+      <ul class="features-list">
+        <li class="feature-item">
+          <div class="feature-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><div class="feature-text">Prise de rendez-vous</div><div class="feature-sub">24h/24, 7j/7, sans attente</div></div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><div class="feature-text">Rappels patients</div><div class="feature-sub">Automatiques, personnalisables</div></div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><div class="feature-text">Gestion des annulations</div><div class="feature-sub">Créneaux libérés en temps réel</div></div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><div class="feature-text">FAQ administrative</div><div class="feature-sub">Horaires, documents, tarifs…</div></div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><div class="feature-text">Historique sécurisé</div><div class="feature-sub">Données chiffrées, conformité RGPD</div></div>
+        </li>
+        <li class="feature-item" style="border:none">
+          <div class="feature-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><div class="feature-text">Transfert humain si nécessaire</div><div class="feature-sub">Escalade automatique et intelligente</div></div>
+        </li>
+      </ul>
+      <div style="margin-top:1.25rem;padding:1rem;background:#FFF7F6;border-radius:12px;border:1px solid #FCCCC5;">
+        <div class="no-item"><div class="no-cross"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="no-text">Aucun diagnostic</span></div>
+        <div class="no-item"><div class="no-cross"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="no-text">Aucun conseil médical</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FOR WHO -->
+<section class="section">
+  <div class="section-label">Pour qui ?</div>
+  <div class="section-title">Fait pour tous les cabinets</div>
+  <div class="who-grid">
+    <div class="who-card">
+      <div class="who-icon">🏥</div>
+      <div class="who-name">Cabinets médicaux</div>
+      <div class="who-sub">Généralistes & spécialistes</div>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">🏨</div>
+      <div class="who-name">Cliniques privées</div>
+      <div class="who-sub">Toutes spécialités</div>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">🦷</div>
+      <div class="who-name">Centres dentaires</div>
+      <div class="who-sub">Soins & orthodontie</div>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">💊</div>
+      <div class="who-name">Centres de soins</div>
+      <div class="who-sub">Kiné, ophtalmo, etc.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Prêt à libérer vos équipes ?</h2>
+  <p>Déployez Normdesk Health en moins de 48h. Sans risque. Sans formation lourde.</p>
+  <div class="cta-btns">
+    <button class="btn-white">Voir une démo</button>
+    <button class="btn-outline-white">Déployer dans votre cabinet</button>
+  </div>
+</div>
+
+<footer>
+  © 2025 Normdesk Health · Assistant IA administratif · Conforme RGPD
+</footer>
+
+</body>
+</html>
